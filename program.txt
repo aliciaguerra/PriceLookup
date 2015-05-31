@@ -1,0 +1,170 @@
+The Program:
+
+This program is an example of an application that uses a very common interface, the DictionaryADT. A dictionary is a structure that accepts key=value pairs. The keys are used to order the structure and to lookup values.  Keys must be distinct; no duplicates are allowed.   There may, however, be duplicate values.   This is the type of application that a retail store might use for customer checkout; it will look up the price of an item given a stock number. Thus, for this dictionary application, the key is stock number (sku), and the value is its price. 
+
+The application program consists of the java class ProductLookup, which has the following methods:
+
+
+import java.util.Iterator;
+import data_structures.*;
+
+public class ProductLookup {
+    private DictionaryADT<String,Double> dictionary;
+
+    // creates a new Dictionary with max capacity.
+    // suitable for hashtable implementations
+    public ProductLookup(int capacity) {
+        }
+        
+    // creates a new Dictionary with no max capacity.
+    // suitable for tree implementations
+    public ProductLookup() {
+        }        
+
+    // inserts a new Product and its price
+    public boolean insertSku(String sku, Double price) {
+        }
+
+    // removes the key value pair that is identified by the key from the dictionary
+    public boolean deleteSku(String sku) {
+        }
+
+    // looks up the price of an Product
+    public Double getPrice(String sku) {
+        }
+        
+    // returns the first sku found with the given price, null otherwise
+    public String getSku(Double price) {
+        }
+
+    // returns true if the sku is already in the dictionary
+    public boolean containsSku(String sku) {
+        }
+    
+    // returns all of the keys in the dictionary within the range start .. finish
+    // inclusive, in sorted order. Neither value 'start' or 'finish' need be in the
+    // dictionary.  Returns null if there are no keys in the range specified.    
+    public String[] getRange(String start, String finish) {
+        }
+            
+    // returns an Iterator of the sku's (the keys) in the dictionary,
+    // in sorted order.
+    public Iterator<String> sku_s() {
+        }
+
+    // returns the prices in the dictionary, in exactly the same order
+    // as the sku_s() Iterator
+    public Iterator<Double> prices() {
+        }
+}   
+
+A note about currency
+
+Java does not have a class suitable for expressing/manipulating currency. It does have Currency and BigDecimal classes, but they are difficult to work with. For this reason, we will be using Double for currency in this project. You should never express currency with anything other than two decimal places. That is $29.95 is correct, $29.94999 is not. You will need to import java.text. Here's an easy example for formatting doubles:
+        double d = 29.95;
+        double e = 30;
+        NumberFormat nf = NumberFormat.getCurrencyInstance();       
+        System.out.println(nf.format(d));
+        System.out.println(nf.format(e));
+This prints:
+
+$29.95
+$30.00
+The DictionaryADT:
+
+As with previous assignments, all data structures must be in package data_structures. That is, the following interface and all classes that implement it. The DictionaryADT interface defined as follows: 
+
+package data_structures;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public interface DictionaryADT<K,V> {
+
+// Returns true if the dictionary has an object identified by
+// key in it, otherwise false.
+public boolean contains(K key);
+
+// Adds the given key/value pair to the dictionary.  Returns 
+// false if the dictionary is full, or if the key is a duplicate.
+// Returns true if addition succeeded.
+public boolean add(K key, V value);
+
+// Deletes the key/value pair identified by the key parameter.
+// Returns true if the key/value pair was found and removed,
+// otherwise false.
+public boolean delete(K key);
+
+// Returns the value associated with the parameter key.  Returns
+// null if the key is not found or the dictionary is empty.
+public V getValue(K key);
+
+// Returns the key associated with the parameter value.  Returns
+// null if the value is not found in the dictionary.  If more 
+// than one key exists that matches the given value, returns the
+// first one found. 
+public K getKey(V value);
+
+// Returns the number of key/value pairs currently stored 
+// in the dictionary
+public int size();
+
+// Returns true if the dictionary has a max capacity and is at max capacity
+public boolean isFull();
+
+// Returns true if the dictionary is empty
+public boolean isEmpty();
+
+// Returns the Dictionary object to an empty state.
+public void clear();
+
+// Returns an Iterator of the keys in the dictionary, in ascending
+// sorted order.  The iterator must be fail-fast.
+public Iterator<K> keys();
+
+// Returns an Iterator of the values in the dictionary.  The
+// order of the values must match the order of the keys. 
+// The iterator must be fail-fast. 
+public Iterator<V> values();
+
+}
+
+The DictionaryADT must be implemented in three ways:
+Binary Search Tree
+HashTable with chaining
+Red/Black Tree
+For the first two implementations, you must write your own code.  For the Red/Black tree implementation, you will use the Java API class java.util.TreeMap, which is an implementation using a Red/Black tree.  For this third implementation only, you may use any class in the Java API.
+
+In your ProductLookup class, you will instantiate an instance of DictionaryADT and hardcode your HashTable class: 
+DictionaryADT<String,Double> dictionary;
+
+    ...
+    dictionary = new HashTable<String,Double>(maxSize);  // in the constructor
+Although you are hardcoding the HashTable in your ProductLookup class, all three implementations should work identically with the application.  Your DictionaryADT and your implementations must be in a package named data_structures.
+Project Files:
+
+Your project will consist of the following files.  You must use exactly these filenames.
+
+ProductLookup.java     The application program.
+DictionaryADT.java     The dictionary interface.  (provided)
+BinarySearchTree.java    The binary search tree implementation of the DictionaryADT.
+HashTable.java     The hash table implementation of the DictionaryADT.  You must using chaining.
+LinearList.java    (Use your LinearList class from project #2).
+LinearListADT.java   The linear list interface from projects #1 and #2.
+RedBlackTree.java    The red/black tree implementation of the DictionaryADT.  Use the Java TreeMap class.
+All of these files must be in a package named 'data_structures', except for ProductLookup, which MUST NOT BE IN ANY PACKAGE. It goes in the level above data_structures.
+
+Project Submission:
+
+As with the previous assignments, you must place all of the files for your project that were not supplied in your handin/prog4 subdirectory. Please remember that the names of your files must match the specifications here.
+Do not make a data_structures folder in your handin subdirectory.
+IMPORTANT:  As the due date falls at the end of the semester, there will be no opportunity for resubmission of your project.   Please be certain that you have created and submitted your files correctly.   If you have questions, please seek help from me or the TAs.
+If your project fails to compile on rohan, you will receive a zero on the assignment; I will not edit your files to get your project to compile.
+Submit printed copy of your report only. Do NOT submit printouts of your Java source code files.
+The Report:
+
+As with programming assignment #2, you will provide a report that provides an analysis of the add, delete, and getValue methods in all three of your dictionary implementations.  Additionally you will provide empirical timing tests to verify that your structures perform as advertised for these three methods.  A sample timing program will be provided to assist you.
+
+Reminder:
+
+For this and all other assignments in the course, you are expected to do your own work.   As stated in the course syllabus, any student caught cheating on the assignment will receive an "F" in the course, and a referral to the Office of Judicial Procedures.   Please review the course syllabus for course policies.
